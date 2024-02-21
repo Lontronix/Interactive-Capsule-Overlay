@@ -6,16 +6,25 @@
 //
 
 import SwiftUI
+import InteractiveCapsuleOverlay
 
 struct ContentView: View {
+
+    @State private var sheetPresented = false
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            VStack {
+                Button("Present Sheet") {
+                    sheetPresented = true
+                }
+            }
+            .navigationTitle("Example")
         }
-        .padding()
+        .sheet(isPresented: $sheetPresented) {
+            Text("This is a sheet... there are many like it but this one is mine.")
+        }
+        .showsInteractiveCapsuleOverlay()
     }
 }
 
