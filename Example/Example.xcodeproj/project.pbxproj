@@ -12,6 +12,7 @@
 		6E98DD162B856D6400CDC44B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E98DD152B856D6400CDC44B /* Assets.xcassets */; };
 		6E98DD192B856D6400CDC44B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E98DD182B856D6400CDC44B /* Preview Assets.xcassets */; };
 		6E98DD212B856D8200CDC44B /* InteractiveCapsuleOverlay in Frameworks */ = {isa = PBXBuildFile; productRef = 6E98DD202B856D8200CDC44B /* InteractiveCapsuleOverlay */; };
+		6E98DD232B8A911000CDC44B /* CapsuleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E98DD222B8A911000CDC44B /* CapsuleConfiguration.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,7 @@
 		6E98DD132B856D6300CDC44B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		6E98DD152B856D6400CDC44B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6E98DD182B856D6400CDC44B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		6E98DD222B8A911000CDC44B /* CapsuleConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleConfiguration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				6E98DD112B856D6300CDC44B /* ExampleApp.swift */,
+				6E98DD222B8A911000CDC44B /* CapsuleConfiguration.swift */,
 				6E98DD132B856D6300CDC44B /* ContentView.swift */,
 				6E98DD152B856D6400CDC44B /* Assets.xcassets */,
 				6E98DD172B856D6400CDC44B /* Preview Content */,
@@ -145,6 +148,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E98DD232B8A911000CDC44B /* CapsuleConfiguration.swift in Sources */,
 				6E98DD142B856D6300CDC44B /* ContentView.swift in Sources */,
 				6E98DD122B856D6300CDC44B /* ExampleApp.swift in Sources */,
 			);

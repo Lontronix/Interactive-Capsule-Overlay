@@ -56,12 +56,8 @@ extension WindowedOverlay {
         }
 
         func updateUIViewController(_ uiViewController: WindowOverlayViewController, context: Context) {
-            guard let window else {
-                return
-            }
-            guard let windowScene = window.windowScene else {
-                return
-            }
+            guard let window else { return }
+            guard let windowScene = window.windowScene else { return }
 
             let overlayWindow = PassthroughWindow(windowScene: windowScene)
             let hostingController = UIHostingController(rootView: content)
