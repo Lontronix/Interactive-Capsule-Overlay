@@ -6,3 +6,7 @@
     - [ ] Primary Action (i.e. Edit Task)
 	- [ ] Secondary Action (i.e Undo Button)
 	- [ ] presentation length (i.e. 5 seconds)
+
+
+## Bugs
+- [ ] When presenting a capsule quickly after another was dismissed, there is no animation performed.
