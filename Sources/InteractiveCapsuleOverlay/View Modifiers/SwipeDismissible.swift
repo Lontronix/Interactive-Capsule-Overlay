@@ -43,3 +43,12 @@ struct SwipeDismissible: ViewModifier {
     }
 
 }
+
+extension View {
+
+    @ViewBuilder
+    func swipeDismissible(onDismiss: @escaping () -> Void) -> some View {
+        modifier(SwipeDismissible(onDismiss: onDismiss))
+    }
+
+}

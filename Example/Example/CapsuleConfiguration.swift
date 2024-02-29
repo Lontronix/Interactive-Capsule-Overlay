@@ -11,6 +11,7 @@ import SwiftUI
 
 enum OverlayAction: String, CaseIterable, Identifiable {
 
+    case createTask = "Create Task"
     case completeTask = "Complete Task"
     case copyText = "Copy Text"
 
@@ -18,6 +19,8 @@ enum OverlayAction: String, CaseIterable, Identifiable {
 
     var configuration: CapsuleOverlayConfiguration {
         return switch self {
+            case .createTask:
+                .taskCreated(accentColor: .green)
             case .completeTask:
                 .taskCompleted(accentColor: .red)
             case .copyText:
@@ -29,12 +32,30 @@ enum OverlayAction: String, CaseIterable, Identifiable {
 
 extension CapsuleOverlayConfiguration {
 
+    static func taskCreated(accentColor: Color) -> CapsuleOverlayConfiguration {
+        return CapsuleOverlayConfiguration(
+            title: "Task Created",
+            primaryAction: .enabled(iconIdentifier: "slider.horizontal.3", onPressed: {
+                print("Edit Task Pressed")
+            }),
+            timeoutInterval: 5,
+            secondaryAction: .enabled(iconIdentifier: "arrow.uturn.backward.circle.fill", onPressed: {
+                print("Undo Task Creation Pressed")
+            }),
+            accentColor: accentColor
+        )
+    }
+
     static func taskCompleted(accentColor: Color) -> CapsuleOverlayConfiguration {
         return CapsuleOverlayConfiguration(
             title: "Task Completed",
-            primaryAction: .enabled(iconIdentifier: "slider.horizontal.3", onPressed: {}),
+            primaryAction: .enabled(iconIdentifier: "slider.horizontal.3", onPressed: {
+                print("Edit Task Completion Pressed")
+            }),
             timeoutInterval: 5,
-            secondaryAction: .enabled(iconIdentifier: "arrow.uturn.backward.circle.fill", onPressed: {}),
+            secondaryAction: .enabled(iconIdentifier: "arrow.uturn.backward.circle.fill", onPressed: {
+                print("Undo Completion Pressed")
+            }),
             accentColor: accentColor
         )
     }
@@ -44,7 +65,9 @@ extension CapsuleOverlayConfiguration {
             title: "Text Copied",
             primaryAction: .disabled,
             timeoutInterval: 5,
-            secondaryAction: .enabled(iconIdentifier: "xmark.circle.fill", onPressed: {}),
+            secondaryAction: .enabled(iconIdentifier: "xmark.circle.fill", onPressed: {
+                print("dismiss pressed")
+            }),
             accentColor: accentColor
         )
     }

@@ -24,3 +24,13 @@ struct FractionalOutline: ViewModifier {
     }
 
 }
+
+extension View {
+
+    @ViewBuilder
+    func fractionalOutline(completionAmount: CGFloat, accentColor: Color) -> some View {
+        modifier(FractionalOutline(completionAmount: completionAmount, accentColor: accentColor))
+    }
+
+}
+

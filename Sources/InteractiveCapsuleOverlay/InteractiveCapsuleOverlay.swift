@@ -17,7 +17,7 @@ struct InteractiveCapsuleOverlayView: View {
     @State private var yOffset: CGFloat = 0
     @State private var numStrikes: TimeInterval = 0
 
-    func dismiss() {
+    func dismissCapsule() {
         withAnimation {
             self.currentConfig = nil
         } completion: {
@@ -27,24 +27,22 @@ struct InteractiveCapsuleOverlayView: View {
 
     @ViewBuilder
     private func capsuleView(config: CapsuleOverlayConfiguration) -> some View {
-        CapsuleView(config: config)
-            .modifier(
-                FractionalOutline(
-                    completionAmount: 1 - ((self.numStrikes) / config.timeoutInterval),
-                    accentColor: config.accentColor.opacity(
-                        0.60
-                    )
-                )
-            )
-            .modifier(SwipeDismissible {
-                dismiss()
-            })
-            .offset(x: 0, y: yOffset)
-            .transition(
-                .move(edge: .bottom)
-                .combined(with: .opacity)
-            )
-            .id(config.id)
+        CapsuleView(config: config) {
+            dismissCapsule()
+        }
+        .fractionalOutline(
+            completionAmount:  1 - ((self.numStrikes) / config.timeoutInterval),
+            accentColor: config.accentColor.opacity(0.60)
+        )
+        .swipeDismissible {
+            dismissCapsule()
+        }
+        .offset(x: 0, y: yOffset)
+        .transition(
+            .move(edge: .bottom)
+            .combined(with: .opacity)
+        )
+        .id(config.id)
     }
 
     public var body: some View {
@@ -85,7 +83,7 @@ struct InteractiveCapsuleOverlayView: View {
                 for try await _ in strikes.asyncValues {
                     guard let currentConfig = currentConfig else { continue }
                     guard numStrikes < currentConfig.timeoutInterval else {
-                        dismiss()
+                        dismissCapsule()
                         continue
                     }
                     self.numStrikes += 1
@@ -105,11 +103,34 @@ extension InteractiveCapsuleOverlayView {
 
         @Environment(\.colorScheme) private var colorScheme
 
+        private static let notificationFeedbackGenerator = UINotificationFeedbackGenerator()
+
         let config: CapsuleOverlayConfiguration
 
-        private func primaryButtonPressed() { }
+        let dismissCapsule: () -> Void
 
-        private func secondaryButtonPressed() { }
+        var primaryButtonIsEnabled: Bool {
+            guard case let .enabled(iconIdentifier: _, onPressed: onPressed) = config.primaryAction else {
+                return false
+            }
+            return true
+        }
+
+        private func primaryButtonPressed() { 
+            guard case let .enabled(iconIdentifier: _, onPressed: onPressed) = config.primaryAction else {
+                return
+            }
+            onPressed()
+            dismissCapsule()
+        }
+
+        private func secondaryButtonPressed() { 
+            guard case let .enabled(iconIdentifier: _, onPressed: onPressed) = config.secondaryAction else {
+                return
+            }
+            onPressed()
+            dismissCapsule()
+        }
 
         @ViewBuilder
         private func primaryActionView() -> some View {
@@ -119,7 +140,7 @@ extension InteractiveCapsuleOverlayView {
             ) = config.primaryAction {
                 Image(systemName: iconIdentifier)
                     .fontWeight(.bold)
-                    .foregroundStyle(.tint)
+                    .foregroundStyle(.tint.opacity(0.80))
             }
         }
 
@@ -138,29 +159,32 @@ extension InteractiveCapsuleOverlayView {
                         .frame(width: 35)
                         .symbolRenderingMode(.hierarchical)
                 }
+                .foregroundStyle(.tint)
+                .buttonStyle(PushDownButtonStyle())
             }
         }
 
         var body: some View {
-            Button {
-                primaryButtonPressed()
-            } label: {
-                HStack {
-                    VStack(alignment: .center, spacing: 0) {
-                        Text(config.title)
-                            .font(.subheadline)
-                            .fontWeight(.medium)
-
-                    }
-                    .foregroundStyle(.secondary)
-                    Spacer()
-                    HStack(spacing: 5) {
-                        primaryActionView()
-                        secondaryActionButton()
+            HStack {
+                Button {
+                    primaryButtonPressed()
+                } label: {
+                    HStack {
+                        VStack(alignment: .center, spacing: 0) {
+                            Text(config.title)
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                        }
+                        .foregroundStyle(.secondary)
+                        Spacer()
+                        HStack(spacing: 5) {
+                            primaryActionView()
+                        }
                     }
                 }
+                .buttonStyle(PushDownButtonStyle())
+                secondaryActionButton()
             }
-            .buttonStyle(.plain)
             .frame(minHeight: 35)
             .frame(width: 180)
             .padding(.vertical, 7)
@@ -175,4 +199,3 @@ extension InteractiveCapsuleOverlayView {
     }
 
 }
-
