@@ -13,6 +13,7 @@ struct ContentView: View {
     @Environment(\.showOverlay) private var showOverlay
 
     @State private var sheetPresented = false
+    @State private var selectedAction: OverlayAction = .completeTask
 
     var body: some View {
         NavigationStack {
@@ -20,8 +21,15 @@ struct ContentView: View {
                 Button("Present Sheet") {
                     sheetPresented = true
                 }
+                Picker("Selected Scenario", selection: $selectedAction) {
+                    ForEach(OverlayAction.allCases) { overlayAction in
+                        Text("\(overlayAction.rawValue)")
+                            .tag(overlayAction)
+                    }
+                }
+
                 Button("Show Overlay") {
-                    showOverlay(.taskCompleted())
+                    showOverlay(selectedAction.configuration)
                 }
             }
             .navigationTitle("Example")

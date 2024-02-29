@@ -36,6 +36,9 @@ struct InteractiveCapsuleOverlayView: View {
                     )
                 )
             )
+            .modifier(SwipeDismissible {
+                dismiss()
+            })
             .offset(x: 0, y: yOffset)
             .transition(
                 .move(edge: .bottom)
@@ -150,7 +153,7 @@ extension InteractiveCapsuleOverlayView {
 
                     }
                     .foregroundStyle(.secondary)
-
+                    Spacer()
                     HStack(spacing: 5) {
                         primaryActionView()
                         secondaryActionButton()
@@ -159,6 +162,7 @@ extension InteractiveCapsuleOverlayView {
             }
             .buttonStyle(.plain)
             .frame(minHeight: 35)
+            .frame(width: 180)
             .padding(.vertical, 7)
             .padding(.leading)
             .padding(.trailing, 5)
