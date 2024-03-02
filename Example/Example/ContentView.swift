@@ -21,6 +21,7 @@ struct ContentView: View {
                 Button("Present Sheet") {
                     sheetPresented = true
                 }
+                .buttonStyle(.bordered)
                 Picker("Selected Scenario", selection: $selectedAction) {
                     ForEach(OverlayAction.allCases) { overlayAction in
                         Text("\(overlayAction.rawValue)")
@@ -31,6 +32,7 @@ struct ContentView: View {
                 Button("Show Overlay") {
                     showOverlay(selectedAction.configuration)
                 }
+                .buttonStyle(.borderedProminent)
             }
             .navigationTitle("Example")
         }
