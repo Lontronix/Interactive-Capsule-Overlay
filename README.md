@@ -2,6 +2,10 @@
 
 A Swift Package for presenting a configurable interactive capsule over all other content (including modal sheets).
 
+<p align="center">
+    <img src="Assets/demo.gif" alt="A Demo of this package" width="200"/>
+</p>
+
 ## Usage
 
 ## Installation
