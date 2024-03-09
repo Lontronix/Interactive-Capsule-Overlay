@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/davedelong/time",
       "state" : {
-        "branch" : "main",
-        "revision" : "5653223b7aa6b88604171be473c0663006878dc8"
+        "revision" : "f827477216e688ef59b68cada2d038124ec08185",
+        "version" : "1.0.0"
       }
     }
   ],

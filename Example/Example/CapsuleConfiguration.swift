@@ -38,7 +38,7 @@ extension CapsuleOverlayConfiguration {
             primaryAction: .enabled(iconIdentifier: "slider.horizontal.3", onPressed: {
                 print("Edit Task Pressed")
             }),
-            timeoutInterval: 5,
+            timeoutInterval: 10,
             secondaryAction: .enabled(iconIdentifier: "arrow.uturn.backward.circle.fill", onPressed: {
                 print("Undo Task Creation Pressed")
             }),
@@ -52,7 +52,7 @@ extension CapsuleOverlayConfiguration {
             primaryAction: .enabled(iconIdentifier: "slider.horizontal.3", onPressed: {
                 print("Edit Task Completion Pressed")
             }),
-            timeoutInterval: 5,
+            timeoutInterval: 10,
             secondaryAction: .enabled(iconIdentifier: "arrow.uturn.backward.circle.fill", onPressed: {
                 print("Undo Completion Pressed")
             }),
@@ -64,7 +64,6 @@ extension CapsuleOverlayConfiguration {
         return CapsuleOverlayConfiguration(
             title: "Text Copied",
             primaryAction: .disabled,
-            timeoutInterval: 5,
             secondaryAction: .enabled(iconIdentifier: "xmark.circle.fill", onPressed: {
                 print("dismiss pressed")
             }),

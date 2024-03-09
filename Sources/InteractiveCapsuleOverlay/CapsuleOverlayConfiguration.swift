@@ -15,6 +15,8 @@ public struct CapsuleOverlayConfiguration: Identifiable {
         case enabled(iconIdentifier: String, onPressed: () -> Void)
     }
 
+    public static let defaultTimeoutInterval = 5.0
+
     public let title: String
     public let timeoutInterval: TimeInterval
     public let primaryAction: ActionConfiguration
@@ -25,7 +27,7 @@ public struct CapsuleOverlayConfiguration: Identifiable {
     public init(
         title: String,
         primaryAction: ActionConfiguration,
-        timeoutInterval: TimeInterval,
+        timeoutInterval: TimeInterval = Self.defaultTimeoutInterval,
         secondaryAction: ActionConfiguration,
         accentColor: Color
     ) {
