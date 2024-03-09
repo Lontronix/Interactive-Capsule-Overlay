@@ -13,7 +13,7 @@ A Swift Package for presenting a configurable interactive capsule over all other
 **Interactive Capsule Overlay** is installed like any other Swift Package, just add this to the `dependencies` section of your `Package.swift` file
 
 ```
-.package(url: "https://github.com/lontronix/Interactive-Capsule-Overlay", from: "1.1.2")
+.package(url: "https://github.com/lontronix/Interactive-Capsule-Overlay", from: "1.1.0")
 ```
 
 ## Add the `showsInteractiveCapsuleOverlay` View Modifier to the root view of your app.
