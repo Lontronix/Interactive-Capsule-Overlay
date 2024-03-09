@@ -9,7 +9,18 @@ import SwiftUI
 
 struct SwipeDismissible: ViewModifier {
 
+    enum SwipeDismissibleEdge {
+        case top
+        case bottom
+    }
+
+    let swipeDismissibleEdge: SwipeDismissibleEdge
     let onDismiss: () -> Void
+
+    var opacity: CGFloat {
+        // the capsule shouldn't be invisible unless its been dismissed since that can confuse the user
+        return max(1 - abs(yDragOffset) / minimumOffsetToDismiss, 0.10)
+    }
 
     @State private var yDragOffset: CGFloat = 0
 
@@ -19,13 +30,23 @@ struct SwipeDismissible: ViewModifier {
     var dragGesture: some Gesture {
         DragGesture()
             .onChanged { gesture in
-                let translationHeight = gesture.translation.height
-                if translationHeight > 0 {
-                    self.yDragOffset = translationHeight
+                var translationHeight =  gesture.translation.height
+
+                switch swipeDismissibleEdge {
+                    case .top:
+                        if translationHeight < 0 {
+                            self.yDragOffset = translationHeight
+                        }
+                    case .bottom:
+                        if translationHeight > 0 {
+                            self.yDragOffset = translationHeight
+                        }
                 }
+
+
             }
             .onEnded { _ in
-                if self.yDragOffset >= self.minimumOffsetToDismiss {
+                if abs(self.yDragOffset) >= self.minimumOffsetToDismiss {
                     self.onDismiss()
                     self.yDragOffset = 0
                 } else {
@@ -36,6 +57,7 @@ struct SwipeDismissible: ViewModifier {
 
     func body(content: Content) -> some View {
         content
+            .opacity(opacity)
             .animation(.bouncy, value: self.yDragOffset)
             .allowsHitTesting(true)
             .offset(x: 0, y: self.yDragOffset)
@@ -47,8 +69,8 @@ struct SwipeDismissible: ViewModifier {
 extension View {
 
     @ViewBuilder
-    func swipeDismissible(onDismiss: @escaping () -> Void) -> some View {
-        modifier(SwipeDismissible(onDismiss: onDismiss))
+    func swipeDismissible(edge: SwipeDismissible.SwipeDismissibleEdge, onDismiss: @escaping () -> Void) -> some View {
+        modifier(SwipeDismissible(swipeDismissibleEdge: edge, onDismiss: onDismiss))
     }
 
 }

@@ -13,7 +13,7 @@ A Swift Package for presenting a configurable interactive capsule over all other
 **Interactive Capsule Overlay** is installed like any other Swift Package, just add this to the `dependencies` section of your `Package.swift` file
 
 ```
-.package(url: "https://github.com/lontronix/Interactive-Capsule-Overlay", from: "2024.1")
+.package(url: "https://github.com/lontronix/Interactive-Capsule-Overlay", from: "1.1.2")
 ```
 
 ## Add the `showsInteractiveCapsuleOverlay` View Modifier to the root view of your app.
@@ -60,6 +60,23 @@ The action is enabled and visible
 | -------------- | ---------- | -------------------------------------------------------------------- |
 | iconIdentifier | String     | The icon used to represent the action (an SF Symbol name)            |
 | onPressed      | () -> Void | A callback this library calls when the action is invoked by the user |
+
+### PresentationMode
+
+#### case: top
+
+The overlay is presented from the top of the screen.
+
+#### case: bottom
+
+The overlay is presented from the bottom of the screen.
+
+| Parameter | Type    | Description                                                                             |
+| --------- | ------- | --------------------------------------------------------------------------------------- |
+| yOffset   | CGFloat | How far the capsule is offset from the top or bottom of the screen (based on the mode). |
+
+**Note:** The specified value is automatically negated for the bottom mode. (i.e. 20 means move the capsule 20 points up)
+
 
 ### CapsuleOverlayConfiguration:
 

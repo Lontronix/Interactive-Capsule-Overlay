@@ -14,6 +14,7 @@ struct ContentView: View {
 
     @State private var sheetPresented = false
     @State private var selectedAction: OverlayAction = .completeTask
+    @State private var selectedPresentationMode: CapsuleOverlayConfiguration.PresentationMode = .bottom()
 
     var body: some View {
         NavigationStack {
@@ -29,8 +30,17 @@ struct ContentView: View {
                     }
                 }
 
+                Picker("Presentation Mode", selection: $selectedPresentationMode) {
+                    Text("Top")
+                        .tag(CapsuleOverlayConfiguration.PresentationMode.top())
+                    Text("Bottom")
+                        .tag(CapsuleOverlayConfiguration.PresentationMode.bottom())
+                }
+
                 Button("Show Overlay") {
-                    showOverlay(selectedAction.configuration)
+                    showOverlay(
+                        selectedAction.configuration(presentationMode: selectedPresentationMode)
+                    )
                 }
                 .buttonStyle(.borderedProminent)
             }

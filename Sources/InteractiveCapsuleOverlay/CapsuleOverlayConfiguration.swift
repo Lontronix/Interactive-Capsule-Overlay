@@ -15,10 +15,27 @@ public struct CapsuleOverlayConfiguration: Identifiable {
         case enabled(iconIdentifier: String, onPressed: () -> Void)
     }
 
+    public enum PresentationMode: Hashable {
+
+        public static let defaultTopYOffset: CGFloat = 15
+        public static let defaultBottomYOffset: CGFloat = 30
+        
+        /// the overlay is presented at the top of the screen
+        case top(yOffset: CGFloat = Self.defaultTopYOffset)
+
+        /**
+         The overlay is presented at the bottom of the screen
+
+         In this mode, `yOffset` is automatically negated, so +20 means move the overlay *up* 20 points from the bottom of the screen.
+         */
+        case bottom(yOffset: CGFloat = Self.defaultBottomYOffset)
+    }
+
     public static let defaultTimeoutInterval = 5.0
 
     public let title: String
     public let timeoutInterval: TimeInterval
+    public let presentationMode: PresentationMode
     public let primaryAction: ActionConfiguration
     public let secondaryAction: ActionConfiguration
     public let accentColor: Color
@@ -26,13 +43,15 @@ public struct CapsuleOverlayConfiguration: Identifiable {
 
     public init(
         title: String,
-        primaryAction: ActionConfiguration,
         timeoutInterval: TimeInterval = Self.defaultTimeoutInterval,
+        presentationMode: PresentationMode = .bottom(),
+        primaryAction: ActionConfiguration,
         secondaryAction: ActionConfiguration,
         accentColor: Color
     ) {
         self.title = title
         self.timeoutInterval = timeoutInterval
+        self.presentationMode = presentationMode
         self.primaryAction = primaryAction
         self.secondaryAction = secondaryAction
         self.accentColor = accentColor

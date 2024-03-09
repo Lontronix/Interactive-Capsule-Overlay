@@ -14,8 +14,39 @@ struct InteractiveCapsuleOverlayView: View {
 
     @Binding var currentConfig: CapsuleOverlayConfiguration?
 
-    @State private var yOffset: CGFloat = 0
+    /// the portion of the y offset that is influenced by how far through the swipe to dismiss gesture the user currently is
+    @State private var swipeDismissableYOffset: CGFloat = 0
     @State private var numStrikes: TimeInterval = 0
+
+    var yOffset: CGFloat {
+        guard let currentConfig else { return 0 }
+        let value = switch currentConfig.presentationMode {
+            case let .bottom(yOffset: bottomYOffset): swipeDismissableYOffset + bottomYOffset * -1
+            case let .top(yOffset: topYOffset): swipeDismissableYOffset + topYOffset
+        }
+        return value
+    }
+
+    var capsuleAlignment: Alignment {
+        guard let currentConfig else { return .bottom }
+        switch currentConfig.presentationMode {
+            case .top:
+                return .top
+            case .bottom(let yOffset):
+                return .bottom
+        }
+    }
+
+    /// the edge the capsule slides in and out from when being shown or hidden
+    var dismissEdge: Edge {
+        guard let currentConfig else { return .bottom }
+        switch currentConfig.presentationMode {
+            case .top(let yOffset):
+                return .top
+            case .bottom(let yOffset):
+                return .bottom
+        }
+    }
 
     func dismissCapsule() {
         withAnimation {
@@ -34,12 +65,12 @@ struct InteractiveCapsuleOverlayView: View {
             completionAmount:  1 - ((self.numStrikes) / config.timeoutInterval),
             accentColor: config.accentColor.opacity(0.60)
         )
-        .swipeDismissible {
+        .swipeDismissible(edge: dismissEdge == .top ? .top : .bottom) {
             dismissCapsule()
         }
         .offset(x: 0, y: yOffset)
         .transition(
-            .move(edge: .bottom)
+            .move(edge: dismissEdge)
             .combined(with: .opacity)
         )
         .id(config.id)
@@ -48,17 +79,11 @@ struct InteractiveCapsuleOverlayView: View {
     public var body: some View {
         GeometryReader { reader in
             VStack {
-                Spacer()
                 if let currentConfig {
                     capsuleView(config: currentConfig)
                 }
             }
-            .onChange(of: reader.safeAreaInsets, initial: true) { (_, newSafeAreaInsets) in
-                // Ensures there is always ample spacing between the capsule and the home indicator
-                yOffset = newSafeAreaInsets.bottom - 32
-
-            }
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: capsuleAlignment)
             .animation(.bouncy, value: currentConfig)
         }
         .onChange(of: currentConfig) {
@@ -102,8 +127,6 @@ extension InteractiveCapsuleOverlayView {
     struct CapsuleView: View {
 
         @Environment(\.colorScheme) private var colorScheme
-
-        private static let notificationFeedbackGenerator = UINotificationFeedbackGenerator()
 
         let config: CapsuleOverlayConfiguration
 
@@ -186,7 +209,7 @@ extension InteractiveCapsuleOverlayView {
                 secondaryActionButton()
             }
             .frame(minHeight: 35)
-            .frame(width: 180)
+            .frame(width: 200)
             .padding(.vertical, 7)
             .padding(.leading)
             .padding(.trailing, 5)

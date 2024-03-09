@@ -17,14 +17,14 @@ enum OverlayAction: String, CaseIterable, Identifiable {
 
     var id: String { return self.rawValue }
 
-    var configuration: CapsuleOverlayConfiguration {
+    func configuration(presentationMode: CapsuleOverlayConfiguration.PresentationMode) -> CapsuleOverlayConfiguration {
         return switch self {
             case .createTask:
-                .taskCreated(accentColor: .green)
+                .taskCreated(accentColor: .green, presentationMode: presentationMode)
             case .completeTask:
-                .taskCompleted(accentColor: .red)
+                .taskCompleted(accentColor: .red, presentationMode: presentationMode)
             case .copyText:
-                .textCopied(accentColor: .blue)
+                .textCopied(accentColor: .blue, presentationMode: presentationMode)
         }
     }
 
@@ -32,13 +32,17 @@ enum OverlayAction: String, CaseIterable, Identifiable {
 
 extension CapsuleOverlayConfiguration {
 
-    static func taskCreated(accentColor: Color) -> CapsuleOverlayConfiguration {
+    static func taskCreated(
+        accentColor: Color,
+        presentationMode: PresentationMode
+    ) -> CapsuleOverlayConfiguration {
         return CapsuleOverlayConfiguration(
             title: "Task Created",
+            timeoutInterval: 10, 
+            presentationMode: presentationMode,
             primaryAction: .enabled(iconIdentifier: "slider.horizontal.3", onPressed: {
                 print("Edit Task Pressed")
             }),
-            timeoutInterval: 10,
             secondaryAction: .enabled(iconIdentifier: "arrow.uturn.backward.circle.fill", onPressed: {
                 print("Undo Task Creation Pressed")
             }),
@@ -46,13 +50,17 @@ extension CapsuleOverlayConfiguration {
         )
     }
 
-    static func taskCompleted(accentColor: Color) -> CapsuleOverlayConfiguration {
+    static func taskCompleted(
+        accentColor: Color,
+        presentationMode: PresentationMode
+    ) -> CapsuleOverlayConfiguration {
         return CapsuleOverlayConfiguration(
             title: "Task Completed",
+            timeoutInterval: 10, 
+            presentationMode: presentationMode,
             primaryAction: .enabled(iconIdentifier: "slider.horizontal.3", onPressed: {
                 print("Edit Task Completion Pressed")
             }),
-            timeoutInterval: 10,
             secondaryAction: .enabled(iconIdentifier: "arrow.uturn.backward.circle.fill", onPressed: {
                 print("Undo Completion Pressed")
             }),
@@ -60,9 +68,13 @@ extension CapsuleOverlayConfiguration {
         )
     }
 
-    static func textCopied(accentColor: Color) -> CapsuleOverlayConfiguration {
+    static func textCopied(
+        accentColor: Color,
+        presentationMode: PresentationMode
+    ) -> CapsuleOverlayConfiguration {
         return CapsuleOverlayConfiguration(
             title: "Text Copied",
+            presentationMode: presentationMode,
             primaryAction: .disabled,
             secondaryAction: .enabled(iconIdentifier: "xmark.circle.fill", onPressed: {
                 print("dismiss pressed")
