@@ -46,6 +46,9 @@ extension CapsuleOverlayConfiguration {
             secondaryAction: .enabled(iconIdentifier: "arrow.uturn.backward.circle.fill", onPressed: {
                 print("Undo Task Creation Pressed")
             }),
+            onDismissButtonPressed: {
+                print("Dismiss Button Pressed")
+            },
             accentColor: accentColor
         )
     }
@@ -64,6 +67,9 @@ extension CapsuleOverlayConfiguration {
             secondaryAction: .enabled(iconIdentifier: "arrow.uturn.backward.circle.fill", onPressed: {
                 print("Undo Completion Pressed")
             }),
+            onDismissButtonPressed: {
+                print("Dismiss Button Pressed")
+            },
             accentColor: accentColor
         )
     }
@@ -77,6 +83,9 @@ extension CapsuleOverlayConfiguration {
             presentationMode: presentationMode,
             primaryAction: .disabled,
             secondaryAction: .disabled,
+            onDismissButtonPressed: {
+                print("Dismiss Button Pressed")
+            },
             accentColor: accentColor
         )
     }

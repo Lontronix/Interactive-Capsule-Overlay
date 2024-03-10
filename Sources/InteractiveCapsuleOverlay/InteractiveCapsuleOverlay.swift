@@ -12,6 +12,13 @@ import Pow
 @MainActor
 struct InteractiveCapsuleOverlayView: View {
 
+    /*
+     Note: 
+
+     - `CapsuleView` is the capsule that is visible on screen
+     - `InteractiveCapsuleOverlayView` is an invisible transparent view that displays a `CapsuleView`
+     */
+
     @Binding var currentConfig: CapsuleOverlayConfiguration?
 
     /// the portion of the y offset that is influenced by how far through the swipe to dismiss gesture the user currently is
@@ -153,51 +160,6 @@ extension InteractiveCapsuleOverlayView {
             dismissCapsule()
         }
 
-        @ViewBuilder
-        private func primaryActionView() -> some View {
-            if case let .enabled(
-                iconIdentifier: iconIdentifier,
-                onPressed: onPressed
-            ) = config.primaryAction {
-                Image(systemName: iconIdentifier)
-                    .fontWeight(.bold)
-                    .foregroundStyle(.tint.opacity(0.80))
-            }
-        }
-
-        @ViewBuilder
-        private func secondaryActionButton() -> some View {
-            if case let .enabled(
-                iconIdentifier: iconIdentifier,
-                onPressed: onPressed
-            ) = config.secondaryAction {
-                Button {
-                    secondaryButtonPressed()
-                } label: {
-                    Image(systemName: iconIdentifier)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 35)
-                        .symbolRenderingMode(.hierarchical)
-                }
-                .foregroundStyle(.tint)
-            }
-        }
-
-        @ViewBuilder
-        private func dismissButton() -> some View {
-            Button {
-                dismissCapsule()
-            } label: {
-                Image(systemName: "xmark.circle.fill")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 30)
-                    .symbolRenderingMode(.hierarchical)
-            }
-            .frame(width: 35)
-            .foregroundStyle(.gray)
-        }
 
         var body: some View {
             Button {
@@ -206,13 +168,7 @@ extension InteractiveCapsuleOverlayView {
                 HStack {
                     HStack(spacing: 2) {
                         dismissButton()
-                        Text(config.title)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .font(.body)
-                            .fontWeight(.medium)
-                            .foregroundStyle(.secondary)
-                            .minimumScaleFactor(0.85)
-                            .lineLimit(1)
+                        primaryLabelView()
                     }
                     primaryActionView()
                     secondaryActionButton()
@@ -234,6 +190,68 @@ extension InteractiveCapsuleOverlayView {
             .buttonStyle(PushDownButtonStyle())
         }
 
+    }
+
+}
+
+extension InteractiveCapsuleOverlayView.CapsuleView {
+
+    @ViewBuilder
+    private func primaryLabelView() -> some View {
+        Text(config.title)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .font(.body)
+            .fontWeight(.medium)
+            .foregroundStyle(.secondary)
+            .minimumScaleFactor(0.85)
+            .lineLimit(1)
+    }
+
+    @ViewBuilder
+    private func primaryActionView() -> some View {
+        if case let .enabled(
+            iconIdentifier: iconIdentifier,
+            onPressed: onPressed
+        ) = config.primaryAction {
+            Image(systemName: iconIdentifier)
+                .fontWeight(.bold)
+                .foregroundStyle(.tint.opacity(0.80))
+        }
+    }
+
+    @ViewBuilder
+    private func secondaryActionButton() -> some View {
+        if case let .enabled(
+            iconIdentifier: iconIdentifier,
+            onPressed: onPressed
+        ) = config.secondaryAction {
+            Button {
+                secondaryButtonPressed()
+            } label: {
+                Image(systemName: iconIdentifier)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 35)
+                    .symbolRenderingMode(.hierarchical)
+            }
+            .foregroundStyle(.tint)
+        }
+    }
+
+    @ViewBuilder
+    private func dismissButton() -> some View {
+        Button {
+            config.onDismissButtonPressed?()
+            dismissCapsule()
+        } label: {
+            Image(systemName: "xmark.circle.fill")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 30)
+                .symbolRenderingMode(.hierarchical)
+        }
+        .frame(width: 35)
+        .foregroundStyle(.gray)
     }
 
 }

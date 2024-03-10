@@ -38,6 +38,7 @@ public struct CapsuleOverlayConfiguration: Identifiable {
     public let presentationMode: PresentationMode
     public let primaryAction: ActionConfiguration
     public let secondaryAction: ActionConfiguration
+    public let onDismissButtonPressed: (() -> Void)?
     public let accentColor: Color
     public let id = UUID()
 
@@ -47,6 +48,7 @@ public struct CapsuleOverlayConfiguration: Identifiable {
         presentationMode: PresentationMode = .bottom(),
         primaryAction: ActionConfiguration,
         secondaryAction: ActionConfiguration,
+        onDismissButtonPressed: (() -> Void)? = nil,
         accentColor: Color
     ) {
         self.title = title
@@ -54,6 +56,7 @@ public struct CapsuleOverlayConfiguration: Identifiable {
         self.presentationMode = presentationMode
         self.primaryAction = primaryAction
         self.secondaryAction = secondaryAction
+        self.onDismissButtonPressed = onDismissButtonPressed
         self.accentColor = accentColor
     }
 
