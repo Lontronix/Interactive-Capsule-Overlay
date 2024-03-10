@@ -18,7 +18,7 @@ public struct CapsuleOverlayConfiguration: Identifiable {
     public enum PresentationMode: Hashable {
 
         public static let defaultTopYOffset: CGFloat = 15
-        public static let defaultBottomYOffset: CGFloat = 30
+        public static let defaultBottomYOffset: CGFloat = 20
         
         /// the overlay is presented at the top of the screen
         case top(yOffset: CGFloat = Self.defaultTopYOffset)

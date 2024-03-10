@@ -12,6 +12,7 @@ struct PushDownButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
+            .opacity(configuration.isPressed ? 0.85 : 1)
             .conditionalEffect(
               .pushDown,
               condition: configuration.isPressed

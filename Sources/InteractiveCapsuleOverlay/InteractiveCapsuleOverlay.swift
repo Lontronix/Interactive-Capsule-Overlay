@@ -58,13 +58,9 @@ struct InteractiveCapsuleOverlayView: View {
 
     @ViewBuilder
     private func capsuleView(config: CapsuleOverlayConfiguration) -> some View {
-        CapsuleView(config: config) {
+        CapsuleView(config: config, completionAmount: 1 - ((self.numStrikes) / config.timeoutInterval)) {
             dismissCapsule()
         }
-        .fractionalOutline(
-            completionAmount:  1 - ((self.numStrikes) / config.timeoutInterval),
-            accentColor: config.accentColor.opacity(0.60)
-        )
         .swipeDismissible(edge: dismissEdge == .top ? .top : .bottom) {
             dismissCapsule()
         }
@@ -130,6 +126,8 @@ extension InteractiveCapsuleOverlayView {
 
         let config: CapsuleOverlayConfiguration
 
+        let completionAmount: CGFloat
+
         let dismissCapsule: () -> Void
 
         var primaryButtonIsEnabled: Bool {
@@ -183,40 +181,57 @@ extension InteractiveCapsuleOverlayView {
                         .symbolRenderingMode(.hierarchical)
                 }
                 .foregroundStyle(.tint)
-                .buttonStyle(PushDownButtonStyle())
             }
         }
 
-        var body: some View {
-            HStack {
-                Button {
-                    primaryButtonPressed()
-                } label: {
-                    HStack {
-                        VStack(alignment: .center, spacing: 0) {
-                            Text(config.title)
-                                .font(.subheadline)
-                                .fontWeight(.medium)
-                        }
-                        .foregroundStyle(.secondary)
-                        Spacer()
-                        HStack(spacing: 5) {
-                            primaryActionView()
-                        }
-                    }
-                }
-                .buttonStyle(PushDownButtonStyle())
-                secondaryActionButton()
+        @ViewBuilder
+        private func dismissButton() -> some View {
+            Button {
+                dismissCapsule()
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 30)
+                    .symbolRenderingMode(.hierarchical)
             }
-            .frame(minHeight: 35)
-            .frame(width: 200)
-            .padding(.vertical, 7)
-            .padding(.leading)
-            .padding(.trailing, 5)
-            .tint(config.accentColor)
-            .background(Material.regular)
-            .clipShape(.capsule(style: .circular))
-            .shadow(color: self.colorScheme == .light ? .black.opacity(0.30) : .clear, radius: 15)
+            .frame(width: 35)
+            .foregroundStyle(.gray)
+        }
+
+        var body: some View {
+            Button {
+                primaryButtonPressed()
+            } label: {
+                HStack {
+                    HStack(spacing: 2) {
+                        dismissButton()
+                        Text(config.title)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .font(.body)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.secondary)
+                            .minimumScaleFactor(0.85)
+                            .lineLimit(1)
+                    }
+                    primaryActionView()
+                    secondaryActionButton()
+                }
+                .frame(minHeight: 40)
+                .frame(width: 225)
+                .padding(.vertical, 5)
+                .padding(.leading, 5)
+                .padding(.trailing, 5)
+                .tint(config.accentColor)
+                .background(Material.regular)
+                .clipShape(.capsule(style: .circular))
+                .shadow(color: self.colorScheme == .light ? .black.opacity(0.30) : .clear, radius: 15)
+                .fractionalOutline(
+                    completionAmount: completionAmount,
+                    accentColor: config.accentColor.opacity(0.60)
+                )
+            }
+            .buttonStyle(PushDownButtonStyle())
         }
 
     }

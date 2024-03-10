@@ -76,9 +76,7 @@ extension CapsuleOverlayConfiguration {
             title: "Text Copied",
             presentationMode: presentationMode,
             primaryAction: .disabled,
-            secondaryAction: .enabled(iconIdentifier: "xmark.circle.fill", onPressed: {
-                print("dismiss pressed")
-            }),
+            secondaryAction: .disabled,
             accentColor: accentColor
         )
     }
